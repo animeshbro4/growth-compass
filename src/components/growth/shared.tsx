@@ -42,14 +42,14 @@ export const TOPICS: Topic[] = [
 ];
 
 /* ─────────────────── SIDEBAR ─────────────────── */
-const NAV = [
+const NAV: { to: string; label: string; icon: any; exact?: boolean }[] = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/roadmap", label: "Learning Roadmap", icon: Map },
   { to: "/notes", label: "Smart Notes", icon: StickyNote },
   { to: "/projects", label: "Project Builder", icon: Hammer },
   { to: "/assessments", label: "Assessments", icon: ClipboardCheck },
   { to: "/settings", label: "Settings", icon: Settings },
-] as const;
+];
 
 export function Sidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
