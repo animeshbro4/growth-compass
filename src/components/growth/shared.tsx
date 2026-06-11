@@ -11,8 +11,6 @@ import {
   Circle,
   Lock,
   PlayCircle,
-  Video,
-  FileText,
   Pen,
   Eraser,
   Square as SquareIcon,
@@ -24,8 +22,7 @@ import {
   List,
   X,
   ChevronRight,
-  Clock,
-  Terminal,
+  Mountain,
 } from "lucide-react";
 
 /* ─────────────────── TYPES ─────────────────── */
@@ -43,30 +40,30 @@ export const TOPICS: Topic[] = [
 
 /* ─────────────────── SIDEBAR ─────────────────── */
 const NAV: { to: string; label: string; icon: any; exact?: boolean }[] = [
-  { to: "/", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { to: "/roadmap", label: "Learning Roadmap", icon: Map },
-  { to: "/notes", label: "Smart Notes", icon: StickyNote },
-  { to: "/projects", label: "Project Builder", icon: Hammer },
-  { to: "/assessments", label: "Assessments", icon: ClipboardCheck },
+  { to: "/", label: "Home", icon: LayoutDashboard, exact: true },
+  { to: "/roadmap", label: "Roadmap", icon: Map },
+  { to: "/notes", label: "Notes", icon: StickyNote },
+  { to: "/projects", label: "Projects", icon: Hammer },
+  { to: "/assessments", label: "Checkpoints", icon: ClipboardCheck },
   { to: "/settings", label: "Settings", icon: Settings },
 ];
 
 export function Sidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-
   return (
-    <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-border bg-[var(--surface)] sticky top-0 h-screen">
-      <div className="px-5 py-5 flex items-center gap-2 border-b border-border">
-        <div className="w-8 h-8 rounded-md bg-foreground text-background grid place-items-center">
-          <Terminal className="w-4 h-4" />
+    <aside className="hidden md:flex w-60 shrink-0 flex-col border-r border-border bg-[var(--surface)] sticky top-0 h-screen">
+      <div className="px-5 py-5 flex items-center gap-2.5">
+        <div className="w-7 h-7 rounded-md bg-[var(--ink)] text-background grid place-items-center">
+          <Mountain className="w-3.5 h-3.5" strokeWidth={2.5} />
         </div>
-        <div>
-          <div className="text-sm font-semibold tracking-tight">GrowthOS</div>
-          <div className="text-[11px] text-muted-foreground font-mono">v0.1 · personal</div>
-        </div>
+        <div className="text-[15px] font-semibold tracking-tight text-[var(--ink)]">GrowthOS</div>
       </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-0.5">
+      <div className="px-5 pb-2 text-[10px] uppercase tracking-[0.18em] font-mono text-muted-foreground">
+        Workspace
+      </div>
+
+      <nav className="flex-1 px-3 space-y-0.5">
         {NAV.map((it) => {
           const Icon = it.icon;
           const isActive = it.exact ? pathname === it.to : pathname.startsWith(it.to);
@@ -74,10 +71,10 @@ export function Sidebar() {
             <Link
               key={it.to}
               to={it.to}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-[13px] transition-colors ${
                 isActive
-                  ? "bg-[var(--surface-2)] text-foreground border border-border"
-                  : "text-muted-foreground hover:text-foreground hover:bg-[var(--surface-2)] border border-transparent"
+                  ? "bg-[var(--surface-2)] text-[var(--ink)]"
+                  : "text-muted-foreground hover:text-foreground hover:bg-[var(--surface-2)]/60"
               }`}
             >
               <Icon className="w-4 h-4" strokeWidth={1.75} />
@@ -87,25 +84,22 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="m-3 p-3 rounded-md border border-border bg-[var(--surface-2)]">
+      <div className="m-3 p-3 rounded-lg border border-border bg-[var(--surface-2)]">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-zinc-700 to-zinc-900 grid place-items-center text-sm font-semibold">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-zinc-700 to-zinc-900 grid place-items-center text-sm font-semibold text-[var(--ink)]">
             A
           </div>
           <div className="min-w-0">
-            <div className="text-sm font-medium truncate">Animesh</div>
-            <div className="text-[11px] text-muted-foreground font-mono truncate">
-              Backend Developer
-            </div>
+            <div className="text-[13px] font-medium truncate text-[var(--ink)]">Animesh</div>
+            <div className="text-[11px] text-muted-foreground font-mono truncate">Backend path</div>
           </div>
         </div>
         <div className="mt-3">
-          <div className="flex justify-between text-[11px] text-muted-foreground font-mono mb-1.5">
-            <span>Today's goal</span>
-            <span>1.5 / 2 hrs</span>
+          <div className="flex justify-between text-[10px] text-muted-foreground font-mono mb-1.5">
+            <span>Today</span><span>1.5 / 2 hrs</span>
           </div>
-          <div className="h-1.5 rounded-full bg-[var(--muted)] overflow-hidden">
-            <div className="h-full bg-[var(--in-progress)]" style={{ width: "75%" }} />
+          <div className="h-1 rounded-full bg-[var(--muted)] overflow-hidden">
+            <div className="h-full bg-[var(--ink)]" style={{ width: "75%" }} />
           </div>
         </div>
       </div>
@@ -113,28 +107,27 @@ export function Sidebar() {
   );
 }
 
-/* mobile top bar with nav links so routes are reachable on small screens */
 export function MobileNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   return (
     <div className="md:hidden sticky top-0 z-30 bg-[var(--surface)] border-b border-border">
-      <div className="px-4 py-3 flex items-center gap-2 border-b border-border">
-        <div className="w-7 h-7 rounded-md bg-foreground text-background grid place-items-center">
-          <Terminal className="w-3.5 h-3.5" />
+      <div className="px-4 py-3 flex items-center gap-2">
+        <div className="w-6 h-6 rounded-md bg-[var(--ink)] text-background grid place-items-center">
+          <Mountain className="w-3 h-3" strokeWidth={2.5} />
         </div>
-        <div className="text-sm font-semibold tracking-tight">GrowthOS</div>
+        <div className="text-sm font-semibold tracking-tight text-[var(--ink)]">GrowthOS</div>
       </div>
-      <nav className="flex overflow-x-auto gap-1 px-2 py-2">
+      <nav className="flex overflow-x-auto gap-1 px-2 pb-2">
         {NAV.map((it) => {
           const isActive = it.exact ? pathname === it.to : pathname.startsWith(it.to);
           return (
             <Link
               key={it.to}
               to={it.to}
-              className={`whitespace-nowrap px-3 py-1.5 rounded-md text-xs border ${
+              className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs ${
                 isActive
-                  ? "bg-[var(--surface-2)] text-foreground border-border"
-                  : "text-muted-foreground border-transparent"
+                  ? "bg-[var(--ink)] text-background"
+                  : "text-muted-foreground bg-[var(--surface-2)]"
               }`}
             >
               {it.label}
@@ -148,34 +141,23 @@ export function MobileNav() {
 
 /* ─────────────────── STAT CARD ─────────────────── */
 export function StatCard({
-  icon: Icon,
-  label,
-  value,
-  sub,
-  progress,
-  accent,
+  icon: Icon, label, value, sub, progress, accent,
 }: {
-  icon: any;
-  label: string;
-  value: string;
-  sub?: string;
-  progress?: number;
-  accent: string;
+  icon: any; label: string; value: string; sub?: string;
+  progress?: number; accent: string;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div className="rounded-xl border border-border bg-card p-5">
       <div className="flex items-center gap-2 text-muted-foreground text-xs">
         <Icon className="w-3.5 h-3.5" strokeWidth={2} />
-        <span className="font-mono uppercase tracking-wider">{label}</span>
+        <span className="font-mono uppercase tracking-wider text-[10px]">{label}</span>
       </div>
-      <div className="mt-3 text-2xl font-semibold tracking-tight">{value}</div>
+      <div className="mt-3 text-2xl font-semibold tracking-tight text-[var(--ink)]">{value}</div>
       {sub && <div className="text-xs text-muted-foreground mt-1 font-mono">{sub}</div>}
       {progress !== undefined && (
         <div className="mt-3 h-1 rounded-full bg-[var(--muted)] overflow-hidden">
-          <div
-            className="h-full transition-all"
-            style={{ width: `${progress * 100}%`, backgroundColor: accent }}
-          />
+          <div className="h-full transition-all"
+            style={{ width: `${progress * 100}%`, backgroundColor: accent }} />
         </div>
       )}
     </div>
@@ -190,8 +172,7 @@ export function Heatmap() {
     for (let i = 0; i < 24 * 7; i++) {
       seed = (seed * 9301 + 49297) % 233280;
       const r = seed / 233280;
-      const v = r < 0.25 ? 0 : r < 0.5 ? 1 : r < 0.75 ? 2 : r < 0.92 ? 3 : 4;
-      arr.push(v);
+      arr.push(r < 0.25 ? 0 : r < 0.5 ? 1 : r < 0.75 ? 2 : r < 0.92 ? 3 : 4);
     }
     return arr;
   }, []);
@@ -227,167 +208,24 @@ export function StatusNode({ status }: { status: TopicStatus }) {
 
 export function StatusBadge({ status }: { status: TopicStatus }) {
   const map: Record<TopicStatus, { label: string; color: string }> = {
-    completed: { label: "Completed", color: "var(--completed)" },
-    in_progress: { label: "Study now", color: "var(--in-progress)" },
+    completed: { label: "Done", color: "var(--completed)" },
+    in_progress: { label: "Studying", color: "var(--in-progress)" },
     available: { label: "Available", color: "var(--available)" },
     locked: { label: "Locked", color: "var(--locked)" },
   };
   const { label, color } = map[status];
   return (
     <span
-      className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-md border whitespace-nowrap"
-      style={{ color, borderColor: color, backgroundColor: `${color}14` }}
+      className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-full border whitespace-nowrap"
+      style={{ color, borderColor: `${color}55`, backgroundColor: `${color}14` }}
     >
       {label}
     </span>
   );
 }
 
-/* ─────────────────── TOPIC DRAWER (WORKBENCH) ─────────────────── */
-export function TopicDrawer({
-  topic,
-  onClose,
-  onStartQuiz,
-}: {
-  topic: string | null;
-  onClose: () => void;
-  onStartQuiz: () => void;
-}) {
-  const [tab, setTab] = useState<"notes" | "canvas">("notes");
-  const open = !!topic;
-  const title = TOPICS.find((t) => t.id === topic)?.title ?? "HTTP Protocol";
-
-  return (
-    <>
-      <div
-        onClick={onClose}
-        className={`fixed inset-0 bg-black/60 transition-opacity z-40 ${
-          open ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-      />
-      <aside
-        className={`fixed top-0 right-0 h-screen w-full md:w-[min(1100px,95vw)] bg-background border-l border-border z-50 transition-transform duration-300 ease-out ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <header className="flex items-center justify-between px-6 py-4 border-b border-border">
-          <div className="flex items-center gap-3">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--in-progress)] border border-[var(--in-progress)] px-2 py-0.5 rounded-md">
-              In progress
-            </span>
-            <h2 className="font-semibold text-lg">{title}</h2>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-md border border-border hover:bg-[var(--surface-2)]"
-            aria-label="Close"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </header>
-
-        <div className="grid md:grid-cols-[380px_1fr] h-[calc(100vh-65px)]">
-          <div className="border-r border-border overflow-y-auto p-5 space-y-4">
-            <div>
-              <h3 className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-3">
-                Resources
-              </h3>
-              <div className="space-y-2">
-                {[
-                  { title: "HTTP Crash Course — MDN", dur: "24 min", type: "Video" },
-                  { title: "REST vs HTTP — high-level", dur: "11 min", type: "Article" },
-                ].map((r) => (
-                  <a
-                    key={r.title}
-                    href="#"
-                    onClick={(e) => e.preventDefault()}
-                    className="flex items-start gap-3 p-3 rounded-md border border-border bg-card hover:bg-[var(--surface-2)] transition-colors"
-                  >
-                    <div className="mt-0.5 w-8 h-8 rounded-md bg-[var(--surface-2)] border border-border grid place-items-center shrink-0">
-                      {r.type === "Video" ? (
-                        <Video className="w-4 h-4 text-muted-foreground" />
-                      ) : (
-                        <FileText className="w-4 h-4 text-muted-foreground" />
-                      )}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="text-sm font-medium truncate">{r.title}</div>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[10px] font-mono text-muted-foreground">{r.type}</span>
-                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded border border-border text-muted-foreground flex items-center gap-1">
-                          <Clock className="w-2.5 h-2.5" />
-                          {r.dur}
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-3">
-                Player
-              </h3>
-              <div className="aspect-video rounded-md border border-border bg-[var(--surface-2)] grid place-items-center">
-                <div className="text-center">
-                  <PlayCircle className="w-10 h-10 mx-auto text-muted-foreground" strokeWidth={1.5} />
-                  <div className="text-xs text-muted-foreground font-mono mt-2">
-                    Click to play · 24:01
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <button
-              onClick={onStartQuiz}
-              className="w-full px-3 py-2.5 rounded-md bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity"
-            >
-              Take 10-min quiz →
-            </button>
-          </div>
-
-          <div className="flex flex-col min-h-0">
-            <div className="flex items-center gap-1 px-4 pt-3 border-b border-border">
-              <TabBtn active={tab === "notes"} onClick={() => setTab("notes")}>
-                Notes
-              </TabBtn>
-              <TabBtn active={tab === "canvas"} onClick={() => setTab("canvas")}>
-                Draw Canvas
-              </TabBtn>
-            </div>
-            {tab === "notes" ? <NotesEditor /> : <CanvasPad />}
-          </div>
-        </div>
-      </aside>
-    </>
-  );
-}
-
-function TabBtn({
-  active,
-  children,
-  onClick,
-}: {
-  active: boolean;
-  children: ReactNode;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`px-3 py-2 text-xs font-medium border-b-2 -mb-px transition-colors ${
-        active
-          ? "border-foreground text-foreground"
-          : "border-transparent text-muted-foreground hover:text-foreground"
-      }`}
-    >
-      {children}
-    </button>
-  );
-}
-
-function NotesEditor() {
+/* ─────────────────── NOTES & CANVAS (used inside topic workspace) ─────────────────── */
+export function NotesEditor() {
   return (
     <div className="flex-1 flex flex-col min-h-0">
       <div className="flex items-center gap-1 px-3 py-2 border-b border-border bg-[var(--surface)]">
@@ -405,30 +243,20 @@ function NotesEditor() {
       </div>
       <div className="flex-1 overflow-y-auto p-6">
         <article className="max-w-2xl mx-auto space-y-4">
-          <h1 className="text-2xl font-semibold tracking-tight">HTTP Protocol — my notes</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--ink)]">
+            My notes
+          </h1>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            HTTP is a stateless, application-layer protocol for distributed, collaborative,
-            hypermedia information systems. Each request is independent.
+            Capture what you learned in your own words. The act of writing is what makes
+            the knowledge yours.
           </p>
-          <h2 className="text-base font-semibold mt-6">Core methods</h2>
-          <ul className="text-sm space-y-1.5 text-foreground/90 list-disc list-inside marker:text-muted-foreground">
-            <li><span className="font-mono text-[var(--in-progress)]">GET</span> — read a resource</li>
-            <li><span className="font-mono text-[var(--completed)]">POST</span> — create a resource</li>
-            <li><span className="font-mono text-[var(--available)]">PUT</span> — replace a resource</li>
-            <li><span className="font-mono text-destructive">DELETE</span> — remove a resource</li>
-          </ul>
-          <pre className="font-mono text-xs bg-[var(--surface-2)] border border-border rounded-md p-4 overflow-x-auto">
-{`GET /api/users/42 HTTP/1.1
-Host: growthos.dev
-Accept: application/json`}
-          </pre>
         </article>
       </div>
     </div>
   );
 }
 
-function CanvasPad() {
+export function CanvasPad() {
   return (
     <div className="flex-1 flex flex-col min-h-0">
       <div className="flex items-center gap-1 px-3 py-2 border-b border-border bg-[var(--surface)]">
@@ -453,14 +281,14 @@ function CanvasPad() {
       <div
         className="flex-1 relative"
         style={{
-          backgroundImage: "radial-gradient(circle, #27272a 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(circle, #1c1c20 1px, transparent 1px)",
           backgroundSize: "20px 20px",
           backgroundColor: "var(--surface)",
         }}
       >
         <div className="absolute inset-0 grid place-items-center pointer-events-none">
           <div className="text-xs text-muted-foreground font-mono">
-            Sketch ideas, diagrams, request flows...
+            Sketch diagrams, request flows, mental models…
           </div>
         </div>
       </div>
@@ -468,10 +296,9 @@ function CanvasPad() {
   );
 }
 
-/* ─────────────────── QUIZ DRAWER ─────────────────── */
+/* ─────────────────── QUIZ DRAWER (assessments) ─────────────────── */
 const QUIZ = {
-  q: 4,
-  total: 10,
+  q: 4, total: 10,
   question: "Which HTTP status code represents a client unauthorized error?",
   options: [
     { id: "a", label: "200 OK" },
@@ -484,12 +311,11 @@ const QUIZ = {
 
 export function QuizDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [picked, setPicked] = useState<string | null>(null);
-
   return (
     <>
       <div
         onClick={onClose}
-        className={`fixed inset-0 bg-black/60 transition-opacity z-40 ${
+        className={`fixed inset-0 bg-black/70 transition-opacity z-40 ${
           open ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       />
@@ -501,17 +327,14 @@ export function QuizDrawer({ open, onClose }: { open: boolean; onClose: () => vo
         <header className="flex items-center justify-between px-6 py-4 border-b border-border">
           <div>
             <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
-              Assessment · HTTP Protocol
+              Checkpoint · HTTP Protocol
             </div>
-            <div className="text-sm font-semibold mt-0.5">
+            <div className="text-sm font-semibold mt-0.5 text-[var(--ink)]">
               Question {QUIZ.q} of {QUIZ.total}
             </div>
           </div>
           <button
-            onClick={() => {
-              setPicked(null);
-              onClose();
-            }}
+            onClick={() => { setPicked(null); onClose(); }}
             className="p-1.5 rounded-md border border-border hover:bg-[var(--surface-2)]"
             aria-label="Close"
           >
@@ -520,57 +343,41 @@ export function QuizDrawer({ open, onClose }: { open: boolean; onClose: () => vo
         </header>
 
         <div className="h-1 bg-[var(--muted)]">
-          <div
-            className="h-full bg-[var(--in-progress)] transition-all"
-            style={{ width: `${(QUIZ.q / QUIZ.total) * 100}%` }}
-          />
+          <div className="h-full bg-[var(--ink)] transition-all"
+            style={{ width: `${(QUIZ.q / QUIZ.total) * 100}%` }} />
         </div>
 
         <div className="p-6 space-y-6">
-          <h2 className="text-lg font-medium leading-relaxed">{QUIZ.question}</h2>
+          <h2 className="text-lg font-medium leading-relaxed text-[var(--ink)]">{QUIZ.question}</h2>
 
           <div className="space-y-2">
             {QUIZ.options.map((o) => {
               const isPicked = picked === o.id;
               const isCorrect = o.id === QUIZ.correct;
               const showResult = picked !== null;
-              const state = !showResult
-                ? "idle"
-                : isPicked && isCorrect
-                  ? "correct"
-                  : isPicked && !isCorrect
-                    ? "wrong"
-                    : isCorrect
-                      ? "reveal"
-                      : "idle";
+              const state = !showResult ? "idle"
+                : isPicked && isCorrect ? "correct"
+                : isPicked && !isCorrect ? "wrong"
+                : isCorrect ? "reveal" : "idle";
 
               const borderColor =
-                state === "correct" || state === "reveal"
-                  ? "var(--completed)"
-                  : state === "wrong"
-                    ? "var(--destructive)"
-                    : "var(--border)";
+                state === "correct" || state === "reveal" ? "var(--completed)"
+                : state === "wrong" ? "var(--destructive)"
+                : "var(--border)";
 
               return (
                 <button
                   key={o.id}
                   onClick={() => !showResult && setPicked(o.id)}
                   disabled={showResult}
-                  className="w-full flex items-center gap-3 p-4 rounded-md border bg-card text-left transition-colors disabled:cursor-default hover:bg-[var(--surface-2)] disabled:hover:bg-card"
+                  className="w-full flex items-center gap-3 p-4 rounded-lg border bg-card text-left transition-colors disabled:cursor-default hover:bg-[var(--surface-2)] disabled:hover:bg-card"
                   style={{ borderColor }}
                 >
-                  <span
-                    className="w-5 h-5 rounded-full border-2 grid place-items-center shrink-0"
-                    style={{ borderColor }}
-                  >
+                  <span className="w-5 h-5 rounded-full border-2 grid place-items-center shrink-0"
+                    style={{ borderColor }}>
                     {isPicked && (
-                      <span
-                        className="w-2 h-2 rounded-full"
-                        style={{
-                          backgroundColor:
-                            state === "correct" ? "var(--completed)" : "var(--destructive)",
-                        }}
-                      />
+                      <span className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: state === "correct" ? "var(--completed)" : "var(--destructive)" }} />
                     )}
                   </span>
                   <span className="font-mono text-xs text-muted-foreground w-5">
@@ -583,21 +390,18 @@ export function QuizDrawer({ open, onClose }: { open: boolean; onClose: () => vo
           </div>
 
           {picked !== null && (
-            <div
-              className="rounded-md border p-4 text-sm"
+            <div className="rounded-lg border p-4 text-sm"
               style={{
-                borderColor:
-                  picked === QUIZ.correct ? "var(--completed)" : "var(--destructive)",
-                backgroundColor: picked === QUIZ.correct ? "#10b98114" : "#ef444414",
-              }}
-            >
-              <div className="font-medium mb-1">
+                borderColor: picked === QUIZ.correct ? "var(--completed)" : "var(--destructive)",
+                backgroundColor: picked === QUIZ.correct ? "#7cb88b14" : "#f8717114",
+              }}>
+              <div className="font-medium mb-1 text-[var(--ink)]">
                 {picked === QUIZ.correct ? "Correct." : "Not quite."}
               </div>
               <div className="text-muted-foreground">
                 <span className="font-mono">401 Unauthorized</span> means the request lacks valid
-                authentication credentials. <span className="font-mono">403 Forbidden</span> is used
-                when the server understands the request but refuses to authorize it.
+                credentials. <span className="font-mono">403 Forbidden</span> means the server
+                understood but refuses to authorize.
               </div>
             </div>
           )}
@@ -609,13 +413,18 @@ export function QuizDrawer({ open, onClose }: { open: boolean; onClose: () => vo
             <button
               disabled={picked === null}
               onClick={() => setPicked(null)}
-              className="px-4 py-2 rounded-md bg-foreground text-background text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
+              className="btn-pill-primary disabled:opacity-40"
             >
-              Next question <ChevronRight className="w-4 h-4" />
+              Next <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>
       </aside>
     </>
   );
+}
+
+/* Legacy export kept for any leftover importers — now a no-op redirect helper */
+export function TopicDrawer(_: { topic: string | null; onClose: () => void; onStartQuiz: () => void }) {
+  return null;
 }
